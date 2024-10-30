@@ -107,7 +107,7 @@ def infer_llm(user_query, scraped_data=''):
             {"role": "user", "content": f"{user_query}"},
         ]
 
-    outputs = pipeline(messages, max_new_tokens=100)
+    outputs = pipeline(messages, max_new_tokens=120)
     response = outputs[0]["generated_text"]
     return response[-1]["content"]
 
