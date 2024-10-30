@@ -52,7 +52,7 @@ def websearch(query):
             EC.presence_of_element_located((By.CSS_SELECTOR, '.tF2Cxc .yuRUbf a'))
         )
         first_url = first_result.get_attribute('href')
-        print(f"\nDEBUG: First URL: {first_url}")
+        print(f"\nDEBUG: The websearch url: {first_url}")
 
     finally:
         # Quit the browser session to free resources
@@ -83,6 +83,7 @@ def websearch(query):
     return content
 
 def query_analysis(user_query):
+    print(f'DEBUG: Analyzing the query for websearch.')
     # Define the conversation in message format with more explicit instructions
     messages = [
         {"role": "system", "content": "You are an AI assistant. For any real-time or up-to-date data query, such as current time, exchange rates, live weather, or current events, respond with **only** 'FALSE'. For general knowledge questions, respond with **only** 'TRUE'."},
@@ -144,6 +145,7 @@ def infer_llm(user_query, scraped_data=''):
     return response[-1]["content"]
 
 def invoke_llm(user_query):
+    print(f'DEBUG: Invoking the LLM with query: {user_query}')
     scraped_data = ''
     query_report = query_analysis(user_query)
 
@@ -160,7 +162,7 @@ def index():
 def send_message():
     user_message = request.form['message']
     llm_response = invoke_llm(user_message)
-
+    print(f'DEBUG: LLM response to user query: {llm_response}')
     return jsonify({"status": "success", "response": llm_response})
 
 if __name__ == '__main__':
