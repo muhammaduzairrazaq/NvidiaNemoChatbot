@@ -158,12 +158,27 @@ def invoke_llm(user_query):
 def index():
     return render_template('index.html')
 
+# @app.route('/send_message', methods=['POST'])
+# def send_message():
+#     user_message = request.form['message']
+#     llm_response = invoke_llm(user_message)
+#     print(f'DEBUG: LLM response to user query: {llm_response}')
+#     return jsonify({"status": "success", "response": llm_response})
+
 @app.route('/send_message', methods=['POST'])
 def send_message():
     user_message = request.form['message']
     llm_response = invoke_llm(user_message)
     print(f'DEBUG: LLM response to user query: {llm_response}')
-    return jsonify({"status": "success", "response": llm_response})
+    messages = []
+    
+    # Return the messages including the user's message and the LLM's response
+    messages.append({"sender": "User", "text": user_message})
+    messages.append({"sender": "System", "text": llm_response})
+
+    return jsonify({"status": "success", "messages": messages})
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)

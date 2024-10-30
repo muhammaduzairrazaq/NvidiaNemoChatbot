@@ -113,24 +113,28 @@
 
     <script>
         $(document).ready(function() {
-            $('#send-btn').on('click', function() {
-                const message = $('#message').val();
-                if (message.trim() === '') return;
-                $.post('/send_message', {message: message}, function(data) {
-                    $('#chat-box').empty(); // Clear existing content
-                    data.messages.forEach(function(msg) {
-                        $('#chat-box').append(
-                            `<div class="message ${msg.sender == 'User' ? 'user-message' : 'system-message'}">
-                                <strong>${msg.sender}:</strong> ${msg.text}
-                            </div>`
-                        );
-                    });
-                    $('#message').val('');  // Clear the input field
-                    // Auto-scroll to the bottom
-                    $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
-                });
+    $('#send-btn').on('click', function() {
+        const message = $('#message').val();
+        if (message.trim() === '') return;
+
+        // Clear the input field immediately after the button is clicked
+        $('#message').val('');  
+
+        $.post('/send_message', {message: message}, function(data) {
+            // Append new messages without clearing the chat box
+            data.messages.forEach(function(msg) {
+                $('#chat-box').append(
+                    `<div class="message ${msg.sender == 'User' ? 'user-message' : 'system-message'}">
+                        <strong>${msg.sender}:</strong> ${msg.text}
+                    </div>`
+                );
             });
+            // Auto-scroll to the bottom
+            $('#chat-box').scrollTop($('#chat-box')[0].scrollHeight);
         });
+    });
+});
+
     </script>
 </body>
 </html>
