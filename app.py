@@ -123,10 +123,6 @@ def invoke_llm(user_query):
 
     return infer_llm(user_query, scraped_data)
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
 @app.route('/send_message', methods=['POST'])
 def send_message():
     user_message = request.form['message']
