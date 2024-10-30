@@ -123,9 +123,14 @@ def invoke_llm(user_query):
 
     return infer_llm(user_query, scraped_data)
 
+
 @app.route('/send_message', methods=['POST'])
 def send_message():
-    user_message = request.form['message']
+    # Expecting JSON input
+    user_message = request.json.get('message')  # This will correctly extract message from JSON body
+    if not user_message:  # Check for missing message
+        return jsonify({"status": "error", "message": "No message provided"}), 400
+    
     llm_response = invoke_llm(user_message)
     print(f'DEBUG: LLM response to user query: {llm_response}')
     
